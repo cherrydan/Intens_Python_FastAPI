@@ -14,4 +14,4 @@ class Submenu(Base):
     submenu_id = Column(UUID(as_uuid=True), ForeignKey("menu.id"), default=uuid.uuid4)
     title = Column(String, nullable=False)
     description = Column(String, nullable=False)
-    child = relationship("Dish")
+    # child = relationship("Dish")
