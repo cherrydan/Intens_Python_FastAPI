@@ -28,3 +28,11 @@ async def get_all_menus() -> List[Menu]:
         async with session.begin():
             menu_dal = MenuDAL(session)
             return await menu_dal.get_all_menu()
+
+
+@router.get("/api/v1/menus/{menu_id}")
+async def get_one_menu_by_menu_id(menu_id: str) -> Menu:
+    async with async_session() as session:
+        async with session.begin():
+            menu_dal = MenuDAL(session)
+            return await menu_dal.get_menu_by_menu_id(menu_id)

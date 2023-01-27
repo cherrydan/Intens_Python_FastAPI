@@ -23,3 +23,6 @@ class MenuDAL:
         q = await self.db_session.execute(select(Menu).order_by(Menu.menu_id))
         return q.scalars().all()
 
+    async def get_menu_by_menu_id(self, menu_id: str) -> Menu:
+        q = await self.db_session.execute(select(Menu).where(Menu.menu_id == menu_id))
+        return q.scalars().one()
