@@ -1,7 +1,7 @@
 #########################################################
 #               ROUTING FOR Main MENU DAL               #
 #########################################################
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter
 
@@ -36,3 +36,11 @@ async def get_one_menu_by_menu_id(menu_id: str) -> Menu:
         async with session.begin():
             menu_dal = MenuDAL(session)
             return await menu_dal.get_menu_by_menu_id(menu_id)
+
+
+@router.put("/api/v1/menus/{menu_id}")
+async def update_main_menu_by_menu_id(menu_id: str, title: Optional[str] = None, description: Optional[str] = None):
+    async with async_session() as session:
+        async with session.begin():
+            menu_dal = MenuDAL(session)
+            return await menu_dal.update_menu_by_menu_id(menu_id, title, description)

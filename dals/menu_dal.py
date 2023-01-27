@@ -1,8 +1,9 @@
 #########################################################
 #               Main menu Data-Access-Layer             #
 #########################################################
-from typing import List
+from typing import List, Optional
 
+from sqlalchemy import update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -26,3 +27,13 @@ class MenuDAL:
     async def get_menu_by_menu_id(self, menu_id: str) -> Menu:
         q = await self.db_session.execute(select(Menu).where(Menu.menu_id == menu_id))
         return q.scalars().one()
+
+    async def update_menu_by_menu_id(self, menu_id: str, title: Optional[str], description: Optional[str]):
+        q = update(Menu).where(Menu.menu_id == menu_id)
+        if title:
+            q = q.values(title=title)
+        if description:
+            q = q.values(description=description)
+
+        q.execution_options(asynchronize_session="fetch")
+        await self.db_session.execute(q)
