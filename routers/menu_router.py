@@ -44,3 +44,11 @@ async def update_main_menu_by_menu_id(menu_id: str, title: Optional[str] = None,
         async with session.begin():
             menu_dal = MenuDAL(session)
             return await menu_dal.update_menu_by_menu_id(menu_id, title, description)
+
+
+@router.delete("/api/v1/menus/{menu_id}")
+async def delete_menu_by_menu_id(menu_id: str):
+    async with async_session() as session:
+        async with session.begin():
+            menu_dal = MenuDAL(session)
+            return await menu_dal.delete_menu_by_menu_id(menu_id)

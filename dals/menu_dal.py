@@ -3,7 +3,7 @@
 #########################################################
 from typing import List, Optional
 
-from sqlalchemy import update
+from sqlalchemy import update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -37,3 +37,9 @@ class MenuDAL:
 
         q.execution_options(asynchronize_session="fetch")
         await self.db_session.execute(q)
+        q = await self.db_session.execute(select(Menu).where(Menu.menu_id == menu_id))
+        return q.scalars().one()
+
+    async def delete_menu_by_menu_id(self, menu_id: str):
+        await self.db_session.execute(delete(Menu).where(Menu.menu_id == menu_id))
+        return {"msg": f"Menu with ID {menu_id} has been deleted"}
