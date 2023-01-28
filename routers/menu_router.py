@@ -4,6 +4,7 @@
 from typing import List, Optional
 
 from fastapi import APIRouter
+from sqlalchemy.exc import NoResultFound
 
 from dals.menu_dal import MenuDAL
 from db.config import async_session
@@ -31,11 +32,14 @@ async def get_all_menus() -> List[Menu]:
 
 
 @router.get("/api/v1/menus/{menu_id}")
-async def get_one_menu_by_menu_id(menu_id: str) -> Menu:
+async def get_one_menu_by_menu_id(menu_id: str):
     async with async_session() as session:
         async with session.begin():
-            menu_dal = MenuDAL(session)
-            return await menu_dal.get_menu_by_menu_id(menu_id)
+            try:
+                menu_dal = MenuDAL(session)
+                return await menu_dal.get_menu_by_menu_id(menu_id)
+            except NoResultFound:
+                return {"msg": "No result"}
 
 
 @router.put("/api/v1/menus/{menu_id}")
