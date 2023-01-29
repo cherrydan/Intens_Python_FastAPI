@@ -7,6 +7,7 @@ from fastapi import APIRouter
 from sqlalchemy.exc import NoResultFound
 
 from dals.menu_dal import MenuDAL
+from dals.submenu_dal import SubmenuDAL
 from db.config import async_session
 from models.menu import Menu
 
@@ -56,3 +57,11 @@ async def delete_menu_by_menu_id(menu_id: str):
         async with session.begin():
             menu_dal = MenuDAL(session)
             return await menu_dal.delete_menu_by_menu_id(menu_id)
+
+
+@router.post("/api/v1/submenu/{menu_id}")
+async def create_submenu(title: str, description: str, menu_id: str):
+    async with async_session() as session:
+        async with session.begin():
+            submenu_dal = SubmenuDAL(session)
+            return await submenu_dal.create_submenu(title, description, menu_id)
