@@ -20,9 +20,9 @@ class SubmenuDAL:
         await self.db_session.flush()
         return new_submenu
 
-    # async def get_all_menu(self) -> List[Submenu]:
-    #     q = await self.db_session.execute(select(Submenu).order_by(Submenu.menu_id))
-    #     return q.scalars().all()
+    async def get_all_submenus_by_menu_id(self, menu_id) -> List[Submenu]:
+        q = await self.db_session.execute(select(Submenu).where(Submenu.submenu_id == menu_id))
+        return q.scalars().all()
     #
     # async def get_menu_by_menu_id(self, menu_id: str) -> Menu:
     #     q = await self.db_session.execute(select(Menu).where(Menu.menu_id == menu_id))

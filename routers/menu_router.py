@@ -65,3 +65,14 @@ async def create_submenu(title: str, description: str, menu_id: str):
         async with session.begin():
             submenu_dal = SubmenuDAL(session)
             return await submenu_dal.create_submenu(title, description, menu_id)
+
+
+@router.get("/api/v1/menus/{menu_id}/submenus")
+async def get_all_submenus_by_menu_id(menu_id: str):
+    async with async_session() as session:
+        async with session.begin():
+            try:
+                submenu_dal = SubmenuDAL(session)
+                return await submenu_dal.get_all_submenus_by_menu_id(menu_id)
+            except NoResultFound:
+                return {"msg": "No result"}
