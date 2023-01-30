@@ -76,3 +76,22 @@ async def get_all_submenus_by_menu_id(menu_id: str):
                 return await submenu_dal.get_all_submenus_by_menu_id(menu_id)
             except NoResultFound:
                 return {"msg": "No result"}
+
+
+@router.get("/api/v1/menus/{menu_id}/submenus/{s_id}")
+async def get_submenu_by_s_id(menu_id: str, s_id: str):
+    async with async_session() as session:
+        async with session.begin():
+            try:
+                submenu_dal = SubmenuDAL(session)
+                return await submenu_dal.get_submenu_by_id(menu_id, s_id)
+            except NoResultFound:
+                return {"msg": "No result"}
+
+
+@router.put("/api/v1/menus/{menu_id}/submenus/{s_id}")
+async def update_submenu_by_id(s_id: str, title: Optional[str] = None, description: Optional[str] = None):
+    async with async_session() as session:
+        async with session.begin():
+            submenu_dal = SubmenuDAL(session)
+            return await submenu_dal.update_submenu_by_id(s_id, title, description)

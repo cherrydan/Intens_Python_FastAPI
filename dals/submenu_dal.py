@@ -23,22 +23,23 @@ class SubmenuDAL:
     async def get_all_submenus_by_menu_id(self, menu_id) -> List[Submenu]:
         q = await self.db_session.execute(select(Submenu).where(Submenu.submenu_id == menu_id))
         return q.scalars().all()
-    #
-    # async def get_menu_by_menu_id(self, menu_id: str) -> Menu:
-    #     q = await self.db_session.execute(select(Menu).where(Menu.menu_id == menu_id))
-    #     return q.scalars().one()
-    #
-    # async def update_menu_by_menu_id(self, menu_id: str, title: Optional[str], description: Optional[str]):
-    #     q = update(Menu).where(Menu.menu_id == menu_id)
-    #     if title:
-    #         q = q.values(title=title)
-    #     if description:
-    #         q = q.values(description=description)
-    #
-    #     q.execution_options(asynchronize_session="fetch")
-    #     await self.db_session.execute(q)
-    #     q = await self.db_session.execute(select(Menu).where(Menu.menu_id == menu_id))
-    #     return q.scalars().one()
+
+    async def get_submenu_by_id(self, menu_id: str, s_id: str) -> Submenu:
+        await self.db_session.execute(select(Submenu).where(Submenu.submenu_id == menu_id))
+        q = await self.db_session.execute(select(Submenu).where(Submenu.id == s_id))
+        return q.scalars().one()
+
+    async def update_submenu_by_id(self, s_id: str, title: Optional[str], description: Optional[str]):
+        q = update(Submenu).where(Submenu.id == s_id)
+        if title:
+            q = q.values(title=title)
+        if description:
+            q = q.values(description=description)
+
+        q.execution_options(asynchronize_session="fetch")
+        await self.db_session.execute(q)
+        q = await self.db_session.execute(select(Submenu).where(Submenu.id == s_id))
+        return q.scalars().one()
     #
     # async def delete_menu_by_menu_id(self, menu_id: str):
     #     await self.db_session.execute(delete(Menu).where(Menu.menu_id == menu_id))
