@@ -95,3 +95,15 @@ async def update_submenu_by_id(s_id: str, title: Optional[str] = None, descripti
         async with session.begin():
             submenu_dal = SubmenuDAL(session)
             return await submenu_dal.update_submenu_by_id(s_id, title, description)
+
+
+@router.delete("/api/v1/menus/{menu_id}/submenus/{s_id}")
+async def delete_submenu_by_id(s_id: str):
+    async with async_session() as session:
+        async with session.begin():
+            try:
+                submenu_dal = SubmenuDAL(session)
+                return await submenu_dal.delete_submenu_by_s_id(s_id)
+            except NoResultFound:
+                return {"msg": "No result"}
+

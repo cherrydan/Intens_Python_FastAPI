@@ -17,13 +17,13 @@ class Menu(Base):
     menu_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     title = Column(String, nullable=False)
     description = Column(String, nullable=False)
-    submenu = relationship("Submenu")
+    submenu = relationship("Submenu", cascade="all, delete-orphan")
 
 
 class Submenu(Base):
     __tablename__ = 'submenu'
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    submenu_id = Column(UUID(as_uuid=True), ForeignKey("menu.menu_id"), default=uuid.uuid4)
+    submenu_id = Column(UUID(as_uuid=True), ForeignKey("menu.menu_id", ondelete='CASCADE'), default=uuid.uuid4)
     title = Column(String, nullable=False)
     description = Column(String, nullable=False)
     dish = relationship("Dish")

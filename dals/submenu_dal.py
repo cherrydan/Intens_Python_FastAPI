@@ -40,7 +40,8 @@ class SubmenuDAL:
         await self.db_session.execute(q)
         q = await self.db_session.execute(select(Submenu).where(Submenu.id == s_id))
         return q.scalars().one()
+
     #
-    # async def delete_menu_by_menu_id(self, menu_id: str):
-    #     await self.db_session.execute(delete(Menu).where(Menu.menu_id == menu_id))
-    #     return {"msg": f"Menu with ID {menu_id} has been deleted"}
+    async def delete_submenu_by_s_id(self, s_id: str):
+        await self.db_session.execute(delete(Submenu).where(Submenu.id == s_id))
+        return {"msg": f"Submenu with ID {s_id} has been deleted"}
